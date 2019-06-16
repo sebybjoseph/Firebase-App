@@ -29,6 +29,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/', (req, res) => {
   Article.find({}, (err, articles)=> {
@@ -44,6 +46,15 @@ app.get('/', (req, res) => {
 
   });
 });
+
+app.get('/article/:id', (req, res)=> {
+  Article.findById(req.params.id, (err, article)=> {
+    res.render("article", {
+      article: article
+    });
+  });
+});
+
 
 app.get('/articles/add', (req, res) => {
   res.render("add_article", {
